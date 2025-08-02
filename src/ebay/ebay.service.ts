@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import eBayApi = require('ebay-api');
+import { AuthService } from '../auth/auth.service';
 
 import {
   CreateProductDto,
@@ -22,45 +23,23 @@ import {
 export class EbayService {
   private readonly logger = new Logger(EbayService.name);
   private eBay: eBayApi;
-  private tokenExpirationTime: number = 0;
 
-  constructor(private configService: ConfigService) {
-    this.eBay = new eBayApi({
-      appId: process.env.EBAY_APP_ID,
-      certId: process.env.EBAY_CERT_ID,
-      ruName: process.env.EBAY_RU_NAME,
-      sandbox: process.env.EBAY_SANDBOX === 'true',
-    });
-
-    this.eBay.OAuth2.setScope([
-      'https://api.ebay.com/oauth/api_scope',
-      'https://api.ebay.com/oauth/api_scope/sell.inventory',
-      'https://api.ebay.com/oauth/api_scope/sell.fulfillment',
-    ]);
+  constructor(
+    private configService: ConfigService,
+    private authService: AuthService,
+  ) {
+    this.eBay = this.authService.getEBayApi();
   }
 
   async authenticate(): Promise<void> {
     try {
-      // Check if token is still valid
-      if (this.tokenExpirationTime > Date.now()) {
-        return;
-      }
-
-      this.logger.log('Authenticating with eBay API...');
-      const token = await this.eBay.OAuth2.getToken(
-        this.configService.get<string>('EBAY_AUTH_CODE'),
-      );
-
-      this.eBay.OAuth2.setCredentials(token);
-
-      // Set token expiration time (usually 2 hours)
-      this.tokenExpirationTime = Date.now() + token.expires_in * 1000 - 300000; // 5 minutes buffer
-
-      this.logger.log('Successfully authenticated with eBay API');
+      await this.authService.ensureAuthenticated();
+      this.logger.log('eBay authentication verified');
     } catch (error) {
-      this.logger.error('Failed to authenticate with eBay', error.stack);
+      this.logger.error('eBay authentication failed', error.stack);
       throw new InternalServerErrorException(
-        'Failed to authenticate with eBay: ' + error.message,
+        'eBay authentication failed. Please authorize first via /api/auth/login: ' +
+          error.message,
       );
     }
   }
@@ -81,8 +60,15 @@ export class EbayService {
         condition: inventoryData.condition,
         product: {
           title: inventoryData.title,
-          description: inventoryData.description,
+          description: `${inventoryData.description}${
+            inventoryData.brand ? `\n\nBrand: ${inventoryData.brand}` : ''
+          }${inventoryData.mpn ? `\nMPN: ${inventoryData.mpn}` : ''}${
+            inventoryData.condition
+              ? `\nCondition: ${inventoryData.condition}`
+              : ''
+          }`,
           brand: inventoryData.brand,
+          ...(inventoryData.mpn && { mpn: inventoryData.mpn }),
           ...(inventoryData.images && {
             imageUrls: inventoryData.images.map((img) => img.imageUrl),
           }),
@@ -133,6 +119,7 @@ export class EbayService {
         title: product.title,
         description: product.description,
         brand: product.brand,
+        mpn: product.mpn,
         condition: product.condition,
         quantity: product.quantity,
         images: product.images,
@@ -159,6 +146,23 @@ export class EbayService {
         merchantLocationKey: this.configService.get<string>(
           'EBAY_MERCHANT_LOCATION',
         ),
+        // eBay için gerekli listing policies
+        listingPolicies: {
+          fulfillmentPolicyId: this.configService.get<string>(
+            'EBAY_FULFILLMENT_POLICY_ID',
+          ),
+          paymentPolicyId: this.configService.get<string>(
+            'EBAY_PAYMENT_POLICY_ID',
+          ),
+          returnPolicyId: this.configService.get<string>(
+            'EBAY_RETURN_POLICY_ID',
+          ),
+        },
+        // Brand ve MPN bilgilerini aspects olarak ekle
+        ...(product.brand &&
+          product.mpn && {
+            listingDescription: `${product.description}\n\nBrand: ${product.brand}\nMPN: ${product.mpn}`,
+          }),
       };
 
       const offer = await this.eBay.sell.inventory.createOffer(offerData);

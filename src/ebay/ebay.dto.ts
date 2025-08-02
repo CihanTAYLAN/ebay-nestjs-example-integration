@@ -59,6 +59,11 @@ export class CreateInventoryItemDto {
   @IsString()
   brand: string;
 
+  @ApiPropertyOptional({ description: 'Manufacturer Part Number (MPN)' })
+  @IsOptional()
+  @IsString()
+  mpn?: string;
+
   @ApiProperty({ description: 'Product condition', enum: ProductCondition })
   @IsEnum(ProductCondition)
   condition: ProductCondition;
@@ -126,6 +131,11 @@ export class CreateProductDto {
   @ApiProperty({ description: 'Product brand' })
   @IsString()
   brand: string;
+
+  @ApiPropertyOptional({ description: 'Manufacturer Part Number (MPN)' })
+  @IsOptional()
+  @IsString()
+  mpn?: string;
 
   @ApiProperty({ description: 'Product condition', enum: ProductCondition })
   @IsEnum(ProductCondition)

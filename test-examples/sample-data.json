@@ -5,6 +5,7 @@
       "title": "Apple iPhone 14 Pro 256GB - Deep Purple",
       "description": "Brand new Apple iPhone 14 Pro with 256GB storage in Deep Purple color. Features A16 Bionic chip, Pro camera system with 48MP main camera, and Dynamic Island.",
       "brand": "Apple",
+      "mpn": "MPUR3LL/A",
       "condition": "NEW",
       "quantity": 25,
       "images": [
@@ -37,6 +38,7 @@
       "title": "Samsung Galaxy S23 Ultra 512GB - Phantom Black",
       "description": "Samsung Galaxy S23 Ultra with 512GB storage, S Pen included, 200MP camera, and 5000mAh battery.",
       "brand": "Samsung",
+      "mpn": "SM-S918UZKAXAA",
       "condition": "NEW",
       "quantity": 15,
       "images": [
@@ -66,6 +68,7 @@
       "title": "Apple MacBook Air 13-inch M2 Chip 256GB - Midnight",
       "description": "MacBook Air with M2 chip, 13.6-inch Liquid Retina display, 8GB unified memory, 256GB SSD storage.",
       "brand": "Apple",
+      "mpn": "MLY33LL/A",
       "condition": "NEW",
       "quantity": 10,
       "images": [
@@ -99,6 +102,7 @@
       "price": 999.99,
       "quantity": 25,
       "brand": "Apple",
+      "mpn": "MPUR3LL/A",
       "condition": "NEW",
       "categoryId": "9355",
       "images": [
@@ -129,6 +133,7 @@
       "price": 1199.99,
       "quantity": 15,
       "brand": "Samsung",
+      "mpn": "SM-S918UZKAXAA",
       "condition": "NEW",
       "categoryId": "9355",
       "images": [
@@ -156,6 +161,7 @@
       "price": 1099.99,
       "quantity": 10,
       "brand": "Apple",
+      "mpn": "MLY33LL/A",
       "condition": "NEW",
       "categoryId": "111422",
       "images": [
