@@ -4,7 +4,7 @@ import { Response } from 'express';
 import { AuthService, TokenData } from './auth.service';
 
 @ApiTags('Authentication')
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
