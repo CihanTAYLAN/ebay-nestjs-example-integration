@@ -1,0 +1,253 @@
+{
+  "coinInventoryItems": [
+    {
+      "sku": "BITCOIN-GOLD-COIN-2024",
+      "title": "Bitcoin Gold Commemorative Coin 2024 - Physical Cryptocurrency Collectible",
+      "description": "Beautiful gold-plated Bitcoin commemorative coin featuring the iconic Bitcoin logo. Perfect for cryptocurrency enthusiasts and collectors. High-quality metal construction with detailed engravings.",
+      "brand": "CryptoCoin",
+      "mpn": "BTC-GOLD-2024",
+      "condition": "NEW",
+      "quantity": 50,
+      "images": [
+        {
+          "imageUrl": "https://example.com/bitcoin-gold-front.jpg"
+        },
+        {
+          "imageUrl": "https://example.com/bitcoin-gold-back.jpg"
+        }
+      ],
+      "specifications": [
+        {
+          "name": "Material",
+          "value": "Gold Plated Metal"
+        },
+        {
+          "name": "Diameter",
+          "value": "40mm"
+        },
+        {
+          "name": "Thickness",
+          "value": "3mm"
+        },
+        {
+          "name": "Year",
+          "value": "2024"
+        }
+      ],
+      "weight": 0.1,
+      "dimensions": "1.57 x 1.57 x 0.12 inches"
+    },
+    {
+      "sku": "ETHEREUM-SILVER-COIN-2024",
+      "title": "Ethereum Silver Commemorative Coin - ETH Cryptocurrency Collectible",
+      "description": "Premium silver-plated Ethereum commemorative coin with detailed ETH logo and blockchain design. Ideal for crypto investors and digital currency collectors.",
+      "brand": "CryptoCoin",
+      "mpn": "ETH-SILVER-2024",
+      "condition": "NEW",
+      "quantity": 75,
+      "images": [
+        {
+          "imageUrl": "https://example.com/ethereum-silver-front.jpg"
+        }
+      ],
+      "specifications": [
+        {
+          "name": "Material",
+          "value": "Silver Plated Metal"
+        },
+        {
+          "name": "Diameter",
+          "value": "38mm"
+        },
+        {
+          "name": "Design",
+          "value": "ETH Logo with Blockchain Pattern"
+        }
+      ],
+      "weight": 0.08,
+      "dimensions": "1.5 x 1.5 x 0.1 inches"
+    },
+    {
+      "sku": "DOGECOIN-BRONZE-COIN-2024",
+      "title": "Dogecoin Bronze Commemorative Coin - DOGE Meme Cryptocurrency",
+      "description": "Fun and collectible Dogecoin bronze coin featuring the famous Shiba Inu dog. Perfect gift for DOGE fans and cryptocurrency enthusiasts. Much wow, very coin!",
+      "brand": "MemeCoin",
+      "mpn": "DOGE-BRONZE-2024",
+      "condition": "NEW",
+      "quantity": 100,
+      "specifications": [
+        {
+          "name": "Material",
+          "value": "Bronze Plated Metal"
+        },
+        {
+          "name": "Theme",
+          "value": "Shiba Inu Dog"
+        },
+        {
+          "name": "Diameter",
+          "value": "35mm"
+        }
+      ],
+      "weight": 0.06
+    }
+  ],
+  "coinProducts": [
+    {
+      "sku": "BITCOIN-GOLD-COIN-2024",
+      "title": "Bitcoin Gold Commemorative Coin 2024 - Physical Cryptocurrency Collectible",
+      "description": "Beautiful gold-plated Bitcoin commemorative coin featuring the iconic Bitcoin logo. Perfect for cryptocurrency enthusiasts and collectors. High-quality metal construction with detailed engravings.",
+      "price": 29.99,
+      "quantity": 50,
+      "brand": "CryptoCoin",
+      "mpn": "BTC-GOLD-2024",
+      "condition": "NEW",
+      "images": [
+        {
+          "imageUrl": "https://example.com/bitcoin-gold-front.jpg"
+        },
+        {
+          "imageUrl": "https://example.com/bitcoin-gold-back.jpg"
+        }
+      ],
+      "specifications": [
+        {
+          "name": "Material",
+          "value": "Gold Plated Metal"
+        },
+        {
+          "name": "Diameter",
+          "value": "40mm"
+        },
+        {
+          "name": "Year",
+          "value": "2024"
+        }
+      ],
+      "weight": 0.1
+    },
+    {
+      "sku": "ETHEREUM-SILVER-COIN-2024",
+      "title": "Ethereum Silver Commemorative Coin - ETH Cryptocurrency Collectible",
+      "description": "Premium silver-plated Ethereum commemorative coin with detailed ETH logo and blockchain design. Ideal for crypto investors and digital currency collectors.",
+      "price": 24.99,
+      "quantity": 75,
+      "brand": "CryptoCoin",
+      "mpn": "ETH-SILVER-2024",
+      "condition": "NEW",
+      "specifications": [
+        {
+          "name": "Material",
+          "value": "Silver Plated Metal"
+        },
+        {
+          "name": "Design",
+          "value": "ETH Logo with Blockchain Pattern"
+        }
+      ],
+      "weight": 0.08
+    },
+    {
+      "sku": "DOGECOIN-BRONZE-COIN-2024",
+      "title": "Dogecoin Bronze Commemorative Coin - DOGE Meme Cryptocurrency",
+      "description": "Fun and collectible Dogecoin bronze coin featuring the famous Shiba Inu dog. Perfect gift for DOGE fans and cryptocurrency enthusiasts. Much wow, very coin!",
+      "price": 19.99,
+      "quantity": 100,
+      "brand": "MemeCoin",
+      "mpn": "DOGE-BRONZE-2024",
+      "condition": "NEW",
+      "specifications": [
+        {
+          "name": "Material",
+          "value": "Bronze Plated Metal"
+        },
+        {
+          "name": "Theme",
+          "value": "Shiba Inu Dog"
+        }
+      ],
+      "weight": 0.06
+    },
+    {
+      "sku": "CRYPTO-SET-2024",
+      "title": "Cryptocurrency Coin Set 2024 - Bitcoin, Ethereum, Dogecoin Collection",
+      "description": "Complete set of 3 cryptocurrency commemorative coins including Bitcoin (gold), Ethereum (silver), and Dogecoin (bronze). Perfect starter collection for crypto enthusiasts.",
+      "price": 69.99,
+      "quantity": 25,
+      "brand": "CryptoCoin",
+      "mpn": "CRYPTO-SET-2024",
+      "condition": "NEW",
+      "specifications": [
+        {
+          "name": "Set Contents",
+          "value": "Bitcoin, Ethereum, Dogecoin coins"
+        },
+        {
+          "name": "Materials",
+          "value": "Gold, Silver, Bronze plated"
+        },
+        {
+          "name": "Package",
+          "value": "Premium gift box included"
+        }
+      ]
+    }
+  ],
+  "coinTestScenarios": {
+    "bitcoin_coin_listing": {
+      "description": "Bitcoin coin tam workflow testi",
+      "steps": [
+        {
+          "step": 1,
+          "action": "POST /api/ebay/inventory",
+          "data": "coinInventoryItems[0] (Bitcoin Gold Coin)"
+        },
+        {
+          "step": 2,
+          "action": "POST /api/ebay/products",
+          "data": "coinProducts[0] (Bitcoin Gold Coin - categoryId otomatik)"
+        },
+        {
+          "step": 3,
+          "action": "POST /api/ebay/products/{offerId}/publish",
+          "data": "{\"duration\": 7}"
+        }
+      ]
+    },
+    "crypto_set_listing": {
+      "description": "Cryptocurrency set listesi",
+      "steps": [
+        {
+          "step": 1,
+          "action": "POST /api/ebay/products",
+          "data": "coinProducts[3] (Crypto Set - categoryId otomatik)"
+        },
+        {
+          "step": 2,
+          "action": "POST /api/ebay/products/{offerId}/publish"
+        }
+      ]
+    }
+  },
+  "coinCategories": {
+    "coins_world": "11116",
+    "coins_us": "11111",
+    "paper_money": "3395",
+    "bullion": "39482",
+    "collectibles": "1"
+  },
+  "coinKeywords": [
+    "bitcoin",
+    "ethereum",
+    "dogecoin",
+    "cryptocurrency",
+    "crypto",
+    "coin",
+    "commemorative",
+    "collectible",
+    "physical",
+    "gold plated",
+    "silver plated",
+    "bronze"
+  ]
+}

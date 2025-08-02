@@ -141,9 +141,12 @@ export class CreateProductDto {
   @IsEnum(ProductCondition)
   condition: ProductCondition;
 
-  @ApiProperty({ description: 'eBay category ID' })
+  @ApiPropertyOptional({
+    description: 'eBay category ID (otomatik belirlenecek)',
+  })
+  @IsOptional()
   @IsString()
-  categoryId: string;
+  categoryId?: string;
 
   @ApiPropertyOptional({
     description: 'Product images',

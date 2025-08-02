@@ -18,6 +18,7 @@ import {
   OrderResponse,
   OrderDetailResponse,
 } from './ebay.dto';
+import { EbayOfferDetailsWithKeys, InventoryItem } from 'ebay-api/lib/types';
 
 @Injectable()
 export class EbayService {
@@ -29,6 +30,50 @@ export class EbayService {
     private authService: AuthService,
   ) {
     this.eBay = this.authService.getEBayApi();
+  }
+
+  /**
+   * Ürün tipine göre otomatik kategori ID belirler
+   */
+  private determineCategoryId(title: string, description: string): string {
+    const content = `${title} ${description}`.toLowerCase();
+
+    // Coin kategorileri
+    if (
+      content.includes('coin') ||
+      content.includes('para') ||
+      content.includes('sikke') ||
+      content.includes('bitcoin') ||
+      content.includes('ethereum') ||
+      content.includes('crypto')
+    ) {
+      return '11116'; // Coins & Paper Money > Coins > World
+    }
+
+    // Diğer kategoriler
+    if (
+      content.includes('phone') ||
+      content.includes('telefon') ||
+      content.includes('iphone') ||
+      content.includes('samsung')
+    ) {
+      return '9355'; // Cell Phones & Smartphones
+    }
+
+    if (
+      content.includes('laptop') ||
+      content.includes('computer') ||
+      content.includes('macbook')
+    ) {
+      return '111422'; // Laptops & Netbooks
+    }
+
+    if (content.includes('watch') || content.includes('saat')) {
+      return '178893'; // Smart Watches
+    }
+
+    // Varsayılan kategori - Everything Else
+    return '99';
   }
 
   async authenticate(): Promise<void> {
@@ -51,7 +96,7 @@ export class EbayService {
     try {
       this.logger.log(`Creating inventory item for SKU: ${inventoryData.sku}`);
 
-      const inventoryItem = {
+      const inventoryItem: InventoryItem = {
         availability: {
           shipToLocationAvailability: {
             quantity: inventoryData.quantity,
@@ -60,26 +105,26 @@ export class EbayService {
         condition: inventoryData.condition,
         product: {
           title: inventoryData.title,
-          description: `${inventoryData.description}${
-            inventoryData.brand ? `\n\nBrand: ${inventoryData.brand}` : ''
-          }${inventoryData.mpn ? `\nMPN: ${inventoryData.mpn}` : ''}${
-            inventoryData.condition
-              ? `\nCondition: ${inventoryData.condition}`
-              : ''
-          }`,
+          description: `${inventoryData.description}`,
+          aspects: {
+            Certification: ['PCGS'],
+            'Circulated/Uncirculated': ['Uncirculated'],
+          } as unknown as string,
           brand: inventoryData.brand,
-          ...(inventoryData.mpn && { mpn: inventoryData.mpn }),
+          mpn: inventoryData.mpn,
           ...(inventoryData.images && {
             imageUrls: inventoryData.images.map((img) => img.imageUrl),
           }),
           ...(inventoryData.weight && {
             weight: {
               value: inventoryData.weight,
-              unit: 'POUND',
+              unit: 'g',
             },
           }),
         },
       };
+
+      console.log('Inventory Item', JSON.stringify(inventoryItem));
 
       await this.eBay.sell.inventory.createOrReplaceInventoryItem(
         inventoryData.sku,
@@ -129,24 +174,14 @@ export class EbayService {
       });
 
       // Then create offer
-      const offerData = {
+      const offerData: EbayOfferDetailsWithKeys = {
         sku: product.sku,
         marketplaceId:
           this.configService.get<string>('EBAY_MARKETPLACE_ID') || 'EBAY_US',
         format: 'FIXED_PRICE',
+        categoryId: product?.categoryId ?? '176958',
         listingDescription: product.description,
         availableQuantity: product.quantity,
-        categoryId: product.categoryId,
-        pricingSummary: {
-          price: {
-            value: product.price.toString(),
-            currency: this.configService.get<string>('EBAY_CURRENCY') || 'USD',
-          },
-        },
-        merchantLocationKey: this.configService.get<string>(
-          'EBAY_MERCHANT_LOCATION',
-        ),
-        // eBay için gerekli listing policies
         listingPolicies: {
           fulfillmentPolicyId: this.configService.get<string>(
             'EBAY_FULFILLMENT_POLICY_ID',
@@ -158,12 +193,24 @@ export class EbayService {
             'EBAY_RETURN_POLICY_ID',
           ),
         },
-        // Brand ve MPN bilgilerini aspects olarak ekle
+        pricingSummary: {
+          price: {
+            value: product.price.toString(),
+            currency: this.configService.get<string>('EBAY_CURRENCY') || 'USD',
+          },
+        },
+        quantityLimitPerBuyer: 10,
+        merchantLocationKey: this.configService.get<string>(
+          'EBAY_MERCHANT_LOCATION',
+        ),
+
         ...(product.brand &&
           product.mpn && {
             listingDescription: `${product.description}\n\nBrand: ${product.brand}\nMPN: ${product.mpn}`,
           }),
       };
+
+      console.log('Offer Data', JSON.stringify(offerData));
 
       const offer = await this.eBay.sell.inventory.createOffer(offerData);
 
