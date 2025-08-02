@@ -2,12 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { StoplightElementsModule } from 'nestjs-stoplight-elements';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Global prefix
-  app.setGlobalPrefix('api');
+  // app.setGlobalPrefix('api');
 
   // Enable CORS
   app.enableCors();
@@ -34,6 +35,11 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
+  const StoplightElements = new StoplightElementsModule(app, document, {
+    router: 'hash',
+  });
+  await StoplightElements.start('/docs');
+
   SwaggerModule.setup('api/docs', app, document, {
     swaggerOptions: {
       persistAuthorization: true,

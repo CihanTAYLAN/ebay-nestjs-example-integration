@@ -9,7 +9,10 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('login')
-  @ApiOperation({ summary: 'Get eBay OAuth2 authorization URL' })
+  @ApiOperation({
+    description: 'Get eBay OAuth2 authorization URL',
+    summary: 'Get eBay OAuth2 authorization URL',
+  })
   @ApiResponse({
     status: 200,
     description: 'Returns authorization URL',

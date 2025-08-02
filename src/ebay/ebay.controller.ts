@@ -28,7 +28,7 @@ import {
   OrderDetailResponse,
 } from './ebay.dto';
 
-@ApiTags('eBay')
+@ApiTags('Ebay')
 @ApiBearerAuth()
 @Controller('ebay')
 export class EbayController {

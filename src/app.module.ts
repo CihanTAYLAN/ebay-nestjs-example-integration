@@ -4,6 +4,7 @@ import { EbayController } from './ebay/ebay.controller';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
 import { ConfigModule } from '@nestjs/config';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
     }),
   ],
-  controllers: [EbayController, AuthController],
+  controllers: [AppController, AuthController, EbayController],
   providers: [EbayService, AuthService],
 })
 export class AppModule {}
