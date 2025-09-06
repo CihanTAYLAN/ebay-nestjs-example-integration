@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import eBayApi = require('ebay-api');
 import * as fs from 'fs';
 import * as path from 'path';
+import eBayApi = require('ebay-api');
 
 export interface TokenData {
   access_token: string;
@@ -80,8 +80,14 @@ export class AuthService {
   async exchangeCodeForToken(code: string): Promise<TokenData> {
     try {
       this.logger.log(`Exchanging authorization code for tokens...`);
+      console.log('Code:', code);
 
-      const tokenResponse = await this.eBay.OAuth2.getToken(code);
+      const tokenResponse = await this.eBay.OAuth2.getToken(
+        code,
+        this.configService.getOrThrow('EBAY_RU_NAME'),
+      );
+
+      console.log('Token Response:', tokenResponse);
 
       const tokenData: TokenData = {
         access_token: tokenResponse.access_token,
@@ -103,6 +109,8 @@ export class AuthService {
       this.logger.log('Successfully exchanged code for tokens');
       return tokenData;
     } catch (error) {
+      console.log(error.response);
+
       this.logger.error('Failed to exchange code for token', error.stack);
       throw error;
     }

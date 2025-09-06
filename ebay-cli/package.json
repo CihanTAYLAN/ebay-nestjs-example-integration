@@ -1,0 +1,36 @@
+{
+    "name": "ebay-au-cli",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "eBay AU Sandbox CLI for creating listings with policies, inventory, offers, and publishing",
+    "main": "ebay-au-cli.js",
+    "bin": {
+        "ebay-au-cli": "./ebay-au-cli.js"
+    },
+    "scripts": {
+        "start": "node ebay-au-cli.js",
+        "create-listing": "node ebay-au-cli.js create-listing",
+        "create-policies": "node ebay-au-cli.js create-policies",
+        "check-offer": "node ebay-au-cli.js check-offer"
+    },
+    "keywords": [
+        "ebay",
+        "australia",
+        "sandbox",
+        "cli",
+        "inventory",
+        "listing",
+        "api"
+    ],
+    "author": "eBay Integration Team",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^1.11.0",
+        "chalk": "^4.1.2",
+        "commander": "^9.5.0",
+        "dotenv": "^16.6.1"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    }
+}

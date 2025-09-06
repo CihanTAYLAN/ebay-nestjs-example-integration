@@ -68,7 +68,7 @@ export class CreateInventoryItemDto {
   @IsEnum(ProductCondition)
   condition: ProductCondition;
 
-  @ApiProperty({ description: 'Available quantity' })
+  @ApiProperty({ description: 'Available quantity', example: 1 })
   @IsInt()
   @IsPositive()
   quantity: number;
@@ -93,7 +93,7 @@ export class CreateInventoryItemDto {
   @Type(() => ProductSpecificationDto)
   specifications?: ProductSpecificationDto[];
 
-  @ApiPropertyOptional({ description: 'Product weight in pounds' })
+  @ApiPropertyOptional({ description: 'Product weight in pounds', example: 0.5 })
   @IsOptional()
   @IsNumber()
   @IsPositive()
@@ -118,12 +118,12 @@ export class CreateProductDto {
   @IsString()
   description: string;
 
-  @ApiProperty({ description: 'Product price in USD' })
+  @ApiProperty({ description: 'Product price in USD', example: 10 })
   @IsNumber()
   @IsPositive()
   price: number;
 
-  @ApiProperty({ description: 'Available quantity' })
+  @ApiProperty({ description: 'Available quantity', example: 1 })
   @IsInt()
   @IsPositive()
   quantity: number;
@@ -143,6 +143,7 @@ export class CreateProductDto {
 
   @ApiPropertyOptional({
     description: 'eBay category ID (otomatik belirlenecek)',
+    example: '3767',
   })
   @IsOptional()
   @IsString()
@@ -168,7 +169,7 @@ export class CreateProductDto {
   @Type(() => ProductSpecificationDto)
   specifications?: ProductSpecificationDto[];
 
-  @ApiPropertyOptional({ description: 'Product weight in pounds' })
+  @ApiPropertyOptional({ description: 'Product weight in pounds', example: 0.5 })
   @IsOptional()
   @IsNumber()
   @IsPositive()
@@ -181,7 +182,7 @@ export class CreateProductDto {
 }
 
 export class UpdatePriceDto {
-  @ApiProperty({ description: 'New price in USD' })
+  @ApiProperty({ description: 'New price in USD', example: 10 })
   @IsNumber()
   @IsPositive()
   price: number;
@@ -247,10 +248,10 @@ export class OrderItemResponse {
   @ApiProperty({ description: 'Item title' })
   title: string;
 
-  @ApiProperty({ description: 'Quantity ordered' })
+  @ApiProperty({ description: 'Quantity ordered', example: 1 })
   quantity: number;
 
-  @ApiProperty({ description: 'Item price' })
+  @ApiProperty({ description: 'Item price', example: 10 })
   price: number;
 
   @ApiProperty({ description: 'Total price for this item' })

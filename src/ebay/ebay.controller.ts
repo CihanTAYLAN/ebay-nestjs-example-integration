@@ -32,7 +32,7 @@ import {
 @ApiBearerAuth()
 @Controller('ebay')
 export class EbayController {
-  constructor(private readonly ebayService: EbayService) {}
+  constructor(private readonly ebayService: EbayService) { }
 
   @Post('inventory')
   @ApiOperation({ summary: 'Create inventory item' })
@@ -46,6 +46,25 @@ export class EbayController {
     @Body() inventoryData: CreateInventoryItemDto,
   ): Promise<InventoryItemResponse> {
     return this.ebayService.createInventoryItem(inventoryData);
+  }
+
+  @Get('inventory')
+  @ApiOperation({ summary: 'Get inventory items' })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Number of items to retrieve (default: 25)',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Inventory items retrieved successfully',
+    type: [InventoryItemResponse],
+  })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  async getInventoryItems(
+    @Query('limit') limit?: number,
+  ): Promise<InventoryItemResponse[]> {
+    return this.ebayService.getInventoryItems(limit);
   }
 
   @Post('products')

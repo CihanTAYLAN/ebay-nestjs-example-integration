@@ -4,8 +4,8 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import eBayApi = require('ebay-api');
 import { AuthService } from '../auth/auth.service';
+import eBayApi = require('ebay-api');
 
 import {
   CreateProductDto,
@@ -84,7 +84,7 @@ export class EbayService {
       this.logger.error('eBay authentication failed', error.stack);
       throw new InternalServerErrorException(
         'eBay authentication failed. Please authorize first via /api/auth/login: ' +
-          error.message,
+        error.message,
       );
     }
   }
@@ -206,8 +206,8 @@ export class EbayService {
 
         ...(product.brand &&
           product.mpn && {
-            listingDescription: `${product.description}\n\nBrand: ${product.brand}\nMPN: ${product.mpn}`,
-          }),
+          listingDescription: `${product.description}\n\nBrand: ${product.brand}\nMPN: ${product.mpn}`,
+        }),
       };
 
       console.log('Offer Data', JSON.stringify(offerData));
@@ -323,9 +323,11 @@ export class EbayService {
       );
     }
   }
-  async getOrders(limit: number = 50): Promise<OrderResponse[]> {
+  async getOrders(limit = 50): Promise<OrderResponse[]> {
     await this.authenticate();
     try {
+      limit = limit ? parseInt(limit.toString(), 10) : 50;
+
       this.logger.log(`Retrieving orders with limit: ${limit}`);
 
       const response = await this.eBay.sell.fulfillment.getOrders({
@@ -414,6 +416,31 @@ export class EbayService {
       );
       throw new InternalServerErrorException(
         'Failed to retrieve order detail: ' + error.message,
+      );
+    }
+  }
+
+  async getInventoryItems(limit = 25): Promise<InventoryItemResponse[]> {
+    await this.authenticate();
+    try {
+      this.logger.log(`Retrieving inventory items, limit: ${limit}`);
+
+      const response = await this.eBay.sell.inventory.getInventoryItems({
+        limit: limit,
+      });
+
+      return response.inventoryItems.map((item) => ({
+        sku: item.sku,
+        availability: item.availability,
+        condition: item.condition,
+        product: item.product,
+        status: 'success',
+        message: 'Inventory items retrieved successfully',
+      }));
+    } catch (error) {
+      this.logger.error('Failed to retrieve inventory items', error.stack);
+      throw new InternalServerErrorException(
+        'Failed to retrieve inventory items: ' + error.message,
       );
     }
   }
