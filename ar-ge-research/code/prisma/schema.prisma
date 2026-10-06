@@ -1,0 +1,195 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  stores Store[]
+
+  @@map("users")
+}
+
+model Store {
+  id              String    @id @default(cuid())
+  name            String
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+  ebayAppId       String?
+  ebayCertId      String?
+  ebayRuName      String?
+  ebayToken       String?
+  ebayTokenExpiry DateTime?
+  description     String?
+  sandboxMode     Boolean   @default(true)
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now())
+
+  products   Product[]
+  categories Category[]
+  priceRules PriceRule[]
+  templates  ListingTemplate[]
+  orders     Order[]
+
+  @@map("stores")
+}
+
+model Product {
+  id             String   @id @default(cuid())
+  storeId        String
+  store          Store    @relation(fields: [storeId], references: [id])
+  sku            String
+  title          String
+  description    String?
+  price          Float
+  costPrice      Float?
+  compareAtPrice Float?
+  quantity       Int
+  trackQuantity  Boolean  @default(true)
+  condition      String?
+  brand          String?
+  categoryId     String?
+  upc            String?
+  ean            String?
+  mpn            String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now())
+
+  orderItems OrderItem[]
+  priceRules ProductPriceRule[]
+  category   Category?          @relation("ProductCategory", fields: [categoryId], references: [id])
+
+  @@unique([storeId, sku])
+  @@map("products")
+}
+
+model Category {
+  id               String    @id @default(cuid())
+  storeId          String
+  store            Store     @relation(fields: [storeId], references: [id])
+  name             String
+  ebayCategoryId   String
+  ebayCategoryName String?
+  level            Int
+  parentId         String?
+  parent           Category? @relation("CategoryToParent", fields: [parentId], references: [id])
+  isActive         Boolean   @default(true)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @default(now())
+
+  children Category[] @relation("CategoryToParent")
+  products Product[]  @relation("ProductCategory")
+
+  @@unique([storeId, ebayCategoryId])
+  @@map("categories")
+}
+
+model PriceRule {
+  id                   String    @id @default(cuid())
+  storeId              String
+  store                Store     @relation(fields: [storeId], references: [id])
+  name                 String
+  priceAdjustmentType  String
+  priceAdjustmentValue Float
+  minPrice             Float?
+  maxPrice             Float?
+  minQuantity          Int?
+  maxQuantity          Int?
+  categoryIds          String[] // Array of category IDs
+  priority             Int
+  startDate            DateTime?
+  endDate              DateTime?
+  isActive             Boolean   @default(true)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @default(now())
+
+  productPriceRules ProductPriceRule[]
+
+  @@map("price_rules")
+}
+
+model ProductPriceRule {
+  id          String   @id @default(cuid())
+  productId   String
+  priceRuleId String
+  createdAt   DateTime @default(now())
+
+  product   Product   @relation(fields: [productId], references: [id])
+  priceRule PriceRule @relation(fields: [priceRuleId], references: [id])
+
+  @@unique([productId, priceRuleId])
+  @@map("product_price_rules")
+}
+
+model ListingTemplate {
+  id                  String   @id @default(cuid())
+  storeId             String
+  store               Store    @relation(fields: [storeId], references: [id])
+  name                String
+  titleTemplate       String
+  descriptionTemplate String
+  imageTemplate       String?
+  shippingTemplate    String?
+  condition           String
+  duration            String
+  listingType         String
+  returnsAccepted     Boolean
+  returnDays          Int
+  paymentMethods      String[] // Array of payment method codes
+  isDefault           Boolean  @default(false)
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now())
+
+  @@map("listing_templates")
+}
+
+model Order {
+  id             String   @id
+  storeId        String
+  store          Store    @relation(fields: [storeId], references: [id])
+  customerEmail  String?
+  customerName   String?
+  customerPhone  String?
+  status         String
+  totalAmount    Float
+  shippingAmount Float?
+  taxAmount      Float?
+  currency       String   @default("USD")
+  createdAt      DateTime
+  updatedAt      DateTime @default(now())
+
+  orderItems OrderItem[]
+
+  @@unique([storeId, id])
+  @@map("orders")
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  orderId    String
+  order      Order   @relation(fields: [orderId], references: [id])
+  productId  String
+  product    Product @relation(fields: [productId], references: [id])
+  sku        String
+  title      String
+  quantity   Int
+  unitPrice  Float
+  totalPrice Float
+
+  @@map("order_items")
+}
